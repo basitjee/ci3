@@ -7,6 +7,9 @@ $route['user/all']				= 'user/getUsers';
 $route['user/get/(:num)']		= 'user/getUser/$1';
 $route['user/delete/(:num)']	= 'user/deleteUser/$1';
 $route['user/update/(:num)']	= 'user/updateUser/$1';
+$route['register']				= 'user/register';
+$route['login']					= 'user/login';
+$route['logout']				= 'user/logout';
 $route['post']					= 'post/index';
 $route['(:any)']				= 'page/index/$1';
 /*

@@ -17,10 +17,12 @@ class User_Model extends CI_Model {
 		return $this->db->get('users')->result();
 	}
 		
-	public function get($id) {
-		$this->db->where('id', $id);
-		// return $this->db->get('users')->row_array();
-		return $this->db->get('users')->row();
+	public function get($username, $password) {
+		$this->db->select('username', 'email');
+		$this->db->where('username', $username);
+		$this->db->where('password', md5($password));
+		return $this->db->get('users')->row_array();
+		// return $this->db->get('users')->row();
 	}	
 		
 	public function update($id, $data) {
