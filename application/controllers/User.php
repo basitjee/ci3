@@ -2,11 +2,15 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends CI_Controller {
- 	 
+ 	private $data = array();
+	 
 	public function __construct() {
- 		 parent::__construct();		
-		 $this->load->model('user_model');	
-		 $this->load->library('form_validation');		 
+		parent::__construct();		
+	 	$this->load->model('user_model');	
+	 	$this->load->library('form_validation');		 
+	 	$lang = ($this->session->userdata('lang')) ?
+	 	$this->session->userdata('lang') : config_item('language');
+		$this->lang->load('menu', $lang);
 	}
 	
 	public function insertUser() {
@@ -47,7 +51,7 @@ class User extends CI_Controller {
 	public function register() {
 		if ($this->input->post()) {
 			if ($this->_validate() === FALSE) {
-				$this->_loadTemplate('register');
+				$this->_loadTemplate('template/register');
 			} else {
 				$data = [
 					'username' 	=> $this->input->post('username'),
@@ -59,7 +63,7 @@ class User extends CI_Controller {
 				redirect('/login', 'refresh');
 			}
 		} else {
-			$this->_loadTemplate('register');
+			$this->_loadTemplate('template/register');
 		}
 	}
 	
@@ -73,19 +77,73 @@ class User extends CI_Controller {
 				$user 		= $this->user_model->get($username, $password);				 
 				$this->session->set_userdata($user);				 
 				$this->session->set_flashdata('success', 'User Successfully Logged');
-				redirect('/home', 'refresh');				
+				redirect('user/dashboard', 'refresh');				
 			}
 		} else {
-			$this->_loadTemplate('login');
+			$this->_loadTemplate('template/login');
 		}
+	}
+	
+	public function dashboard() {
+		if (! $this->session->userdata('id')) {
+				$this->session->set_flashdata('error', 'You need to login to access this page');
+				redirect('login', 'refresh');
+		}
+		$this->data['posts'] = $this->user_model->getuserposts('posts', $this->session->userdata('id'));
+		$this->_loadTemplate('user_dashboard');		
+	}
+	
+	public function editProfile() {
+		$this->_loadTemplate('edit_profile');		
+	}
+	
+	public function do_upload() {
+		$config['upload_path']          = './uploads/';
+        $config['allowed_types']        = 'gif|jpg|png|jpeg';
+		// $config['file_name']			= 'avatar';
+        $config['max_size']             = 1024;
+        $config['max_width']            = 1920;
+        $config['max_height']           = 1080;
+        $this->load->library('upload', $config);
+        	if ( ! $this->upload->do_upload('userfile')) {
+                $this->data = array('error' => $this->upload->display_errors());
+                $this->_loadTemplate('edit_profile');
+        	} else {                
+                $data 						= array('upload_data' => $this->upload->data());	
+				$args['source_image'] 		= './uploads/'.$data["upload_data"]["file_name"];
+				/*
+				$args['wm_text'] 			= 'Copyright 2019 - Abdul Basit';
+				$args['wm_type'] 			= 'text';
+				$args['wm_font_path'] 		= './system/fonts/texb.ttf';
+				$args['wm_font_size'] 		= '22';
+				$args['wm_font_color'] 		= '000000';
+				$args['wm_vrt_alignment'] 	= 'bottom';
+				$args['wm_hor_alignment'] 	= 'center';
+				$args['wm_padding'] 		= '-25';				 
+				*/								 
+				$args['wm_type'] 			= 'overlay';
+				$args['wm_overlay_path']	= './uploads/a.png';
+				$args['wm_vrt_alignment'] 	= 'bottom';
+				$args['wm_hor_alignment'] 	= 'center';
+				$args['wm_padding'] 		= '-25';				 
+				$this->load->library('image_lib', $args);				
+					if ( ! $this->image_lib->watermark()) {
+						$this->session->set_flashdata('error', $this->image_lib->display_errors()); 
+					}																		 
+				$image 						= array('image'=>$data["upload_data"]["file_name"]);				 				
+				$this->user_model->update_profile($this->session->userdata('id'), $image);
+				$this->session->set_userdata('image', $data["upload_data"]["file_name"]);
+				$this->session->set_flashdata('success', 'Profile Updated Successfully');
+                redirect('user/dashboard', 'refesh');
+        	}	
 	}
 	
 	public function logout() {
 		session_destroy();
 		$this->session->set_flashdata('success', 'User logged out successfully');			
-		redirect('/login', 'refresh');
+		redirect('user/login', 'refresh');
 	}
-	
+		
 	private function _validateLogin() {
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]|max_length[20]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[3]');
@@ -111,7 +169,7 @@ class User extends CI_Controller {
 	private function _loadTemplate($view) {
 		$this->load->view('template/header');
 		$this->load->view('template/navbar');
-		$this->load->view('template/'.$view);
+		$this->load->view($view, $this->data);
 		$this->load->view('template/footer');
 	}
 			

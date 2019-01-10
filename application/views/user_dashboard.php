@@ -1,5 +1,23 @@
 <div classs="row">
 	<div class="col-md-8 col-md-offset-2">
+		<div class="row">
+			<div class="col-md-4">				 
+				<?php 
+					if ($this->session->userdata('image') == NULL) {
+					?>	
+						<img class="img-responsive" src="<?php echo base_url();?>uploads/anonymouse.jpg" />
+					<?php	
+					} else {
+				?>	
+						<img class="img-responsive" src="<?php echo base_url()."uploads/".$this->session->userdata('image'); ?>" />
+				<?php
+					}
+				?>
+			</div>
+			<div class="col-md-8">
+				<h3><?php echo $this->session->userdata('username'); ?></h3>
+			</div> 		
+		</div>	
 		<?php foreach($posts as $post): ?>
 		<a href="<?php echo base_url('/post/show/'.$post->id); ?>"><h2><?php echo $post->title; ?></h2></a>
 		<p><?php echo $post->body; ?></p>

@@ -11,7 +11,7 @@ class Post extends CI_Controller {
 	 }
 	 		  
 	public function index() {
-		$posts['posts'] = $this->crud_model->getall('posts');		  
+		$posts['posts'] = $this->crud_model->getall('posts');		  				
 		$this->load->view('template/header');	
 		$this->load->view('template/navbar');
 		$this->load->view('posts/index', $posts);
@@ -19,6 +19,10 @@ class Post extends CI_Controller {
 	}
 				  
 	public function create() {
+		if (! $this->session->userdata('id')) {
+			$this->session->set_flashdata('error', 'You need to login to access this page');
+			redirect('/login', 'refresh');
+		}	
 		$this->load->view('template/header');
 		$this->load->view('template/navbar');
 		$this->load->view('posts/create');
@@ -27,6 +31,10 @@ class Post extends CI_Controller {
 	 
 	public function save() {
 		// $this->input->post()
+		if (! $this->session->userdata('id')) {
+			$this->session->set_flashdata('error', 'You need to login to access this page');
+			redirect('/login', 'refresh');
+		}
 		$this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[5]|max_length[12]');
 		$this->form_validation->set_rules('body', 'Body', 'trim|required|min_length[15]|max_length[100]');
 			if ($this->form_validation->run() == FALSE) {
@@ -36,8 +44,9 @@ class Post extends CI_Controller {
 				$this->load->view('template/footer');
 			} else {
 				$data = array(
-					'title' => $this->input->post('title'),
-					'body'  => $this->input->post('body'),
+					'title' 	=> $this->input->post('title'),
+					'body'  	=> $this->input->post('body'),
+					'user_id'   => $this->session->userdata('id'),
 				);
 				$insert = $this->crud_model->insert('posts', $data);
 				if ($insert) {
@@ -47,6 +56,10 @@ class Post extends CI_Controller {
 	}
 	
 	public function edit($id) {
+ 		if (! $this->session->userdata('id')) {
+			$this->session->set_flashdata('error', 'You need to login to access this page');
+			redirect('/login', 'refresh');
+		}	
  		$data['post'] = $this->crud_model->get('posts', $id);
 		// if edit method is called from form then update in database and redirect
 		if ($this->input->post()) {
@@ -78,6 +91,10 @@ class Post extends CI_Controller {
 	}	 
 	
 	public function delete($id) {
+		if (! $this->session->userdata('id')) {
+			$this->session->set_flashdata('error', 'You need to login to access this page');
+			redirect('/login', 'refresh');
+		}	
 		$deleted = $this->crud_model->delete('posts', $id);
 			if ($deleted) {
 				echo "Data Deleted Successfully";
@@ -92,6 +109,13 @@ class Post extends CI_Controller {
 		$this->load->view('template/navbar');
 		$this->load->view('posts/show', $data);
 		$this->load->view('template/footer');	
+	}
+	
+	private function _loadTemplate($view) {
+		$this->load->view('template/header');
+		$this->load->view('template/navbar');
+		$this->load->view('template/'.$view);
+		$this->load->view('template/footer');
 	}
 	
 }
