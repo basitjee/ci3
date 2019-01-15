@@ -6,11 +6,7 @@ class User extends CI_Controller {
 	 
 	public function __construct() {
 		parent::__construct();		
-	 	$this->load->model('user_model');	
-	 	$this->load->library('form_validation');		 
-	 	$lang = ($this->session->userdata('lang')) ?
-	 	$this->session->userdata('lang') : config_item('language');
-		$this->lang->load('menu', $lang);
+	 	$this->load->model('user_model');		 		 	
 	}
 	
 	public function insertUser() {
@@ -25,8 +21,8 @@ class User extends CI_Controller {
 		echo "</pre>";
 	}
 	
-	public function getUser($id) {
-		$user = $this->user_model->get($id);
+	public function getUser($id) {		 
+		$user = $this->user_model->get($id);		 
 			if ($user) {
 				echo "<pre>";
 				print_r($user);		
@@ -49,39 +45,41 @@ class User extends CI_Controller {
 	}
 	
 	public function register() {
-		if ($this->input->post()) {
-			if ($this->_validate() === FALSE) {
-				$this->_loadTemplate('template/register');
+		$this->load->library('email');
+			if ($this->input->post()) {
+				if ($this->_validate() === FALSE) {
+					$this->_loadTemplate('template/register');
+				} else {
+					$data = [
+						'username' 	=> $this->input->post('username'),
+						'email'		=> $this->input->post('email'),
+						'password'	=> md5($this->input->post('password')),
+					];
+					$data	= $this->security->xss_clean($data); 
+					$user 	= $this->user_model->insert($data);
+					$this->session->set_flashdata('success', 'User Successfully Registered');
+					redirect('/login', 'refresh');
+				}
 			} else {
-				$data = [
-					'username' 	=> $this->input->post('username'),
-					'email'		=> $this->input->post('email'),
-					'password'	=> md5($this->input->post('password')),
-				];
-				$user = $this->user_model->insert($data);
-				$this->session->set_flashdata('success', 'User Successfully Registered');
-				redirect('/login', 'refresh');
+				$this->_loadTemplate('template/register');
 			}
-		} else {
-			$this->_loadTemplate('template/register');
-		}
 	}
 	
-	public function login() {
-		if ($this->input->post()) {
+	public function login() {			
+		if ($this->input->post()) {			
 			if ($this->_validateLogin() === FALSE) {
-				$this->_loadTemplate('login');
+				$this->_loadTemplate('template/login');
 			} else {								
 				$username 	= $this->input->post('username');				 
-				$password 	= $this->input->post('password');									
+				$password 	= $this->input->post('password');			
 				$user 		= $this->user_model->get($username, $password);				 
 				$this->session->set_userdata($user);				 
 				$this->session->set_flashdata('success', 'User Successfully Logged');
 				redirect('user/dashboard', 'refresh');				
 			}
-		} else {
+		} else {			 				 
 			$this->_loadTemplate('template/login');
-		}
+		}		 
 	}
 	
 	public function dashboard() {
@@ -145,7 +143,7 @@ class User extends CI_Controller {
 	}
 		
 	private function _validateLogin() {
-		$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]|max_length[20]');
+		$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]|max_length[100]');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[3]');
 			if ($this->form_validation->run() == FALSE) {
 				return FALSE;
@@ -155,7 +153,7 @@ class User extends CI_Controller {
 	}
 
 	private function _validate() {
-		$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]|max_length[20]');
+		$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[5]|max_length[100]');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|is_unique[users.email]|valid_email');
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[3]');
 		$this->form_validation->set_rules('password_confirmation', 'Confirm Password', 'trim|required|matches[password]');

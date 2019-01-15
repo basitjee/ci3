@@ -12,7 +12,7 @@ class Language extends CI_Controller {
 		$last 			= $this->uri->total_segments();
 		$redirect_page	= $this->uri->segment($last);		 
 		$this->session->unset_userdata('lang');
-		$this->session->set_userdata('lang', 'english');
+		$this->session->set_userdata('lang', 'english');		 
 		redirect($redirect_page, 'refresh');
 	}
 	

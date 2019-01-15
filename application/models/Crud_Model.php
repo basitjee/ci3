@@ -12,7 +12,9 @@ class Crud_Model extends CI_Model {
 		return $this->db->insert($table, $data);
 	}
 	
-	public function getAll($table) {		 
+	public function getAll($table, $data=array()) {
+	    if (!empty($data))
+            $this->db->where($data);		 
 		return $this->db->get($table)->result();
 	}
 		
@@ -30,5 +32,10 @@ class Crud_Model extends CI_Model {
 		$this->db->where('id', $id);
 		return $this->db->delete($table);
 	}	
+	
+	public function getPagination($table, $limit, $offset) {
+		$this->db->limit($limit, $offset);
+		return $this->db->get($table)->result();
+	}
 		
 }

@@ -1,0 +1,1 @@
+<h2>Only Ajax Request Allowesd!!!</h2>

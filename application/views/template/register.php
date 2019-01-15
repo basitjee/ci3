@@ -3,8 +3,10 @@
 echo validation_errors('<div class="alert alert-danger">', '</div>');
 ?>
 <div class="panel panel-default">	
-  <div class="panel-heading"><h4>Registration Form</h4></div>
-  <form class="" action="register" method="post">
+  <div class="panel-heading"><h4>Registration Form</h4></div>   
+  <?php
+  echo form_open(base_url('register'), array('method'=>'post', 'class'=>'form-horizontal', 'id'=>'register-form'));
+  ?>
   <div class="panel-body">	 	
 	<label for="username">Username</label>
 	<div class="input-group">
@@ -31,7 +33,9 @@ echo validation_errors('<div class="alert alert-danger">', '</div>');
 	  <button type="submit" class="btn btn-default">Submit</button>
 	</div>	
   </div>
-  </form>
+  <?php	  
+  echo form_close();
+  ?>
 	</div>
 	</div>
 </div>

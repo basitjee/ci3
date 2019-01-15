@@ -1,5 +1,6 @@
 <div classs="row">
 	<div class="col-md-8 col-md-offset-2">
+		 
 		<?php foreach($posts as $post): ?>
 		<a href="<?php echo base_url('/post/show/'.$post->id); ?>"><h2><?php echo $post->title; ?></h2></a>
 		<p><?php echo $post->body; ?></p>
@@ -13,5 +14,9 @@
 			</p>
 		<?php endif; ?>	
 		<?php endforeach; ?>
+		<nav aria-label="Page navigation">
+			<?php echo $links; ?>	
+		</nav>	
+		
 	</div>	
 </div>	
