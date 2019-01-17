@@ -1,11 +1,13 @@
 <div class="row">
 	<div class="col-md-4 col-md-offset-4" align="center">
-
-	<br/><br/>
-	
+	<br/><br/>	
 	</div>
 </div>	
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<!------- Including  jQuery library from Google------>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!-------Including jQuery file in form------>
+<script src="<?php echo base_url(). "js/submit.js" ?>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
@@ -41,12 +43,11 @@ $('#subcat1').hide();
     
 }
 
-function getSub2($id) {
-    alert("I am in getSub2: "+$id);
-    $('#cat').val($id);
+function getSub2($id) {     
+    $('#cat').val($id); 
     
     $.ajax({
-        url: '<?php echo base_url('post/getCategories') ?>?cat_id='+$id,
+        url: location.href+"post/getCategories?cat_id="+$id,
         type: 'GET',
         dataType: 'html',
     })

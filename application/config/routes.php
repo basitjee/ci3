@@ -15,6 +15,7 @@ $route['user/dashboard']		= 'user/dashboard';
 $route['dashboard']				= 'user/dashboard';
 $route['post']					= 'post/index';
 $route['migrate']               = 'migration/index';
+$route['hash']                  = 'hash/index';
 $route['lang/eng']				= 'language/english';
 $route['lang/eng/(:any)']		= 'language/english';
 $route['lang/ur']				= 'language/urdu';

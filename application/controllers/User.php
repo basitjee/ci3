@@ -65,7 +65,7 @@ class User extends CI_Controller {
 			}
 	}
 	
-	public function login() {			
+	public function login() {	     			
 		if ($this->input->post()) {			
 			if ($this->_validateLogin() === FALSE) {
 				$this->_loadTemplate('template/login');

@@ -20,12 +20,12 @@
             <select name="" id="subcat1" class="form-control" onchange="document.getElementById('cat').value = this.value">
             </select>    
         </div>       
-        <form class="form-horizontal" id="frmshowposts">
+        <form class="form-horizontal" id="frmshowposts">       
             <div class="form-group">
                 <input type="hidden" id="cat" name="category" value="-1" />
-                <!-- <button type="button" class="btn btn-primary" onclick="showPosts()">Show Posts</button> -->
-            </div>    
-        </form>                 
+                <button type="button" class="btn btn-primary" onclick="showPosts()">Show Posts</button> 
+            </div>  
+        </form> 
     </div>    
 </div>    
 <h1 class="text-center">Home Page</h1>

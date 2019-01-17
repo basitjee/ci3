@@ -62,7 +62,13 @@ if ( ! function_exists('create_captcha'))
 	 */
 	function create_captcha($data = '', $img_path = '', $img_url = '', $font_path = '')
 	{
-		$defaults = array(
+		/*    
+		echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+        die("it is working 7");           
+        */
+         $defaults = array(
 			'word'		=> '',
 			'img_path'	=> '',
 			'img_url'	=> '',

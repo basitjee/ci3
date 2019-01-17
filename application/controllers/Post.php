@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Post extends CI_Controller {
+class Post extends MY_Controller {
  	 private $data = array();
 	 
 	 public function __construct() {
@@ -24,8 +24,7 @@ class Post extends CI_Controller {
 				$page = 0;
 			} 				
 		$this->data['posts']		= $this->crud_model->getPagination('posts', $config['per_page'], $page);	
-		$this->_loadTemplate('posts/index');	  				
-		 
+		$this->_loadTemplate('posts/index');
 	}
 				  
 	public function create() {
