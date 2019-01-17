@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 17, 2019 at 08:11 PM
+-- Generation Time: Jan 17, 2019 at 09:29 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 5.6.39
 
@@ -31,8 +31,17 @@ SET time_zone = "+00:00";
 CREATE TABLE `blog` (
   `id` int(5) UNSIGNED NOT NULL,
   `title` varchar(150) NOT NULL,
-  `content` text
+  `content` text,
+  `author_name` varchar(150) DEFAULT 'Abdul Basit'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `blog`
+--
+
+INSERT INTO `blog` (`id`, `title`, `content`, `author_name`) VALUES
+(1, 'Title One', 'Blog one description', 'Abdul Basit'),
+(2, 'Title Two', 'Blog two description', 'Abdul Basit');
 
 -- --------------------------------------------------------
 
@@ -128,7 +137,9 @@ INSERT INTO `ci_sessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
 ('4evr0alk1af4gseo0jagc8leaaphptku', '::1', 1547600081, 0x5f5f63695f6c6173745f726567656e65726174657c693a313534373630303037313b63617074636861576f72647c733a383a224b6966373078774b223b),
 ('1vq0ngvadt7i3tj0gjd8mmsjf7o2np39', '::1', 1547601145, 0x5f5f63695f6c6173745f726567656e65726174657c693a313534373630313034323b66696c656e616d657c733a31393a22313534373630313134352e393339312e6a7067223b63617074636861576f72647c733a383a226353697936677a44223b),
 ('rsoj8666aspqibbhgat6t92mhdl8dfhg', '::1', 1547601602, 0x5f5f63695f6c6173745f726567656e65726174657c693a313534373630313535333b66696c656e616d657c733a31393a22313534373630313630322e333532322e6a7067223b63617074636861576f72647c733a383a22354c626d72724f4d223b),
-('j37b9ji7o4jgntf3vdgkcffte38cbed6', '::1', 1547609243, 0x5f5f63695f6c6173745f726567656e65726174657c693a313534373630393230363b);
+('j37b9ji7o4jgntf3vdgkcffte38cbed6', '::1', 1547609243, 0x5f5f63695f6c6173745f726567656e65726174657c693a313534373630393230363b),
+('oq1ks42hfc87i71fdkj9c0fbrc261nks', '::1', 1547754961, 0x5f5f63695f6c6173745f726567656e65726174657c693a313534373735343936313b),
+('4bm6bb7vckdrc3j2nas75ma94h17ske8', '::1', 1547756121, 0x5f5f63695f6c6173745f726567656e65726174657c693a313534373735363132313b);
 
 -- --------------------------------------------------------
 
@@ -168,7 +179,7 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`version`) VALUES
-(2);
+(4);
 
 -- --------------------------------------------------------
 
@@ -331,7 +342,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `blog`
 --
 ALTER TABLE `blog`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `category`
