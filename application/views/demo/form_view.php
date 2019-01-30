@@ -61,6 +61,7 @@ if (!defined('BASEPATH'))
         data: $("#demoform").serializeArray()
     })
         .done(function( return_data ) {
+            alert("it is working");
             // This loop is executed when ajax call is done and control is returned back. 
             // Display return_data like below if you want to examine raw data returned in case of any issues.
             //alert( "Data returned: " + return_data );
